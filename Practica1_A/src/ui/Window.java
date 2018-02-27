@@ -12,6 +12,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.text.NumberFormatter;
 
 import logica.Tablero;
@@ -167,22 +168,37 @@ public class Window extends JFrame {
 	}
 	
 	private void update() { //OPTIMIZAR
-		int n = 0;
-		while( n < this.botonera.length) {
-			for (int f = this.tab.getFilas() - 1; f >= 0; f--) {
-				for(int c = 0; c < this.tab.getColumnas(); c++) {
-					this.botonera[n].updateButtons(this.tab.getNodo(f, c).getTipoNodo());
-					n++;
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+				int n = 0;
+				while( n < this.botonera.length) {
+					for (int f = this.tab.getFilas() - 1; f >= 0; f--) {
+						for(int c = 0; c < this.tab.getColumnas(); c++) {
+							if (estado.equals(Estado.STOP)) {
+								
+									try {
+										Thread.sleep(50);
+										this.botonera[n].updateButtons(this.tab.getNodo(f, c).getTipoNodo());
+									} catch (InterruptedException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								
+							}
+							else 
+								this.botonera[n].updateButtons(this.tab.getNodo(f, c).getTipoNodo());
+							n++;
+						}
+					}
 				}
-			}
-		}
-		if (this.estado.equals(Estado.OBSTACLES)) this.finObstButton.setEnabled(true);
-		else this.finObstButton.setEnabled(false);
-		
-		if (estado.equals(Estado.WORKING)) {
-			estado = (Estado) controlador.accion(Acciones.CALCULATE, null);
-			update();
-		}
+				if (this.estado.equals(Estado.OBSTACLES)) this.finObstButton.setEnabled(true);
+				else this.finObstButton.setEnabled(false);
+				
+				if (estado.equals(Estado.WORKING)) {
+					estado = (Estado) controlador.accion(Acciones.CALCULATE, null);
+					update();
+				}
+		    }
 	}
 	
 	private void reset() {

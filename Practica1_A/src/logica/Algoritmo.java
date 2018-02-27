@@ -30,6 +30,7 @@ public class Algoritmo {
 		listaAbierta.add(this.tab.getNodoInicio());
 		
 		while (listaAbierta.size() != 0) {
+			Collections.sort(listaAbierta);
 			Nodo nodoActual = listaAbierta.get(0);
 			boolean vecinoMejor = false;
 			float distanciaFilas, distanciaColumnas;
@@ -47,14 +48,15 @@ public class Algoritmo {
 					if(!listaCerrada.contains(nodoVecino) || !nodoVecino.getTipoNodo().equals(TipoNodo.OBSTACULO)) {
 						float distancia1 = tab.calcularDistancias(nodoActual, nodoVecino);
 						
-						if (!listaAbierta.contains(nodoVecino)) {
+						if (!listaAbierta.contains(nodoVecino) && !listaCerrada.contains(nodoVecino)) {
 							listaAbierta.add(nodoVecino);
-							Collections.sort(listaAbierta);
+							//Collections.sort(listaAbierta);
 							vecinoMejor = true;
-						} else if (distancia1 < nodoActual.getDistanciaDesdeInicio())
+						} else if (distancia1 > nodoActual.getDistanciaDesdeInicio())
 							vecinoMejor = true;
 						if (vecinoMejor) {
-							nodoVecino.setNodoAnterior(nodoActual);
+							if (nodoVecino.getNodoAnterior() == null)
+								nodoVecino.setNodoAnterior(nodoActual);
 							nodoVecino.setDistanciaDesdeInicio(distancia1);
 							distanciaFilas = tab.getNodoMeta().getF() - nodoVecino.getF();
 							distanciaColumnas = tab.getNodoMeta().getC() - nodoVecino.getC();
@@ -72,9 +74,12 @@ public class Algoritmo {
 	private Ruta recalcularRuta(Nodo nodo) {
 		Ruta ruta = new Ruta();
 		
-		while (nodo.getNodoAnterior() != null) {
+		while (nodo != null && nodo.getNodoAnterior() != null) {
 			ruta.anhadirCoordenadas(true, nodo);
-			nodo = nodo.getNodoAnterior();
+			if (!nodo.getTipoNodo().equals(TipoNodo.INICIO))
+				nodo = nodo.getNodoAnterior();
+			else
+				nodo = null;
 		}
 		this.rutaMasCorta = ruta;
 		return ruta;

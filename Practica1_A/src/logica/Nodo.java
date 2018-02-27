@@ -183,8 +183,7 @@ public class Nodo implements Comparable<Nodo>{
 	}
 
 	public void setCamino(boolean camino) {
-		if (camino == false) this.tipo = TipoNodo.VACIO;
-		else this.tipo = TipoNodo.CAMINO;
+		if (camino && this.tipo != TipoNodo.INICIO) this.tipo = TipoNodo.CAMINO;
 	}
 	
 	public TipoNodo getTipoNodo() {
@@ -192,17 +191,17 @@ public class Nodo implements Comparable<Nodo>{
 	}
 
 	public void setInicio(boolean inicio) {
-		if (inicio == false) this.tipo = TipoNodo.VACIO;
+		if (!inicio) this.tipo = TipoNodo.VACIO;
 		else this.tipo = TipoNodo.INICIO;
 	}
 
 	public void setMeta(boolean meta) {
-		if (meta == false) this.tipo = TipoNodo.VACIO;
+		if (!meta) this.tipo = TipoNodo.VACIO;
 		else this.tipo = TipoNodo.META;
 	}
 	
 	public void setObstaculo(boolean obstaculo) {
-		if (obstaculo == false) this.tipo = TipoNodo.VACIO;
+		if (!obstaculo) this.tipo = TipoNodo.VACIO;
 		else this.tipo = TipoNodo.OBSTACULO;
 	}
 
@@ -212,11 +211,14 @@ public class Nodo implements Comparable<Nodo>{
 
 	@Override
 	public int compareTo(Nodo nodo) {
-		float distanciaHastaMeta = this.distanciaDesdeInicio + this.distanciaHastaMeta;
+		/*float distanciaHastaMeta = this.distanciaDesdeInicio + this.distanciaHastaMeta;
 		float distanciaHastaMetaAux = nodo.getDistanciaDesdeInicio() + nodo.getDistanciaHastaMeta();
 		
-		if (distanciaHastaMeta < distanciaHastaMetaAux) return -1;
-		else if (distanciaHastaMeta > distanciaHastaMetaAux) return 1;
+		if (distanciaHastaMeta < distanciaHastaMetaAux) return 1;
+		else if (distanciaHastaMeta > distanciaHastaMetaAux) return -1;*/
+		
+		if (this.distanciaHastaMeta < nodo.getDistanciaHastaMeta()) return -1;
+		else if (this.distanciaHastaMeta > nodo.getDistanciaHastaMeta()) return 1;
 		
 		return 0;
 	}
