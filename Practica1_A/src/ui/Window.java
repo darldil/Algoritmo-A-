@@ -171,14 +171,14 @@ public class Window extends JFrame {
 		SwingUtilities.invokeLater(new Runnable() {
 		    public void run() {
 				int n = 0;
-				while( n < this.botonera.length) {
-					for (int f = this.tab.getFilas() - 1; f >= 0; f--) {
-						for(int c = 0; c < this.tab.getColumnas(); c++) {
+				while( n < botonera.length) {
+					for (int f = tab.getFilas() - 1; f >= 0; f--) {
+						for(int c = 0; c < tab.getColumnas(); c++) {
 							if (estado.equals(Estado.STOP)) {
 								
 									try {
 										Thread.sleep(50);
-										this.botonera[n].updateButtons(this.tab.getNodo(f, c).getTipoNodo());
+										botonera[n].updateButtons(tab.getNodo(f, c).getTipoNodo());
 									} catch (InterruptedException e) {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
@@ -186,19 +186,20 @@ public class Window extends JFrame {
 								
 							}
 							else 
-								this.botonera[n].updateButtons(this.tab.getNodo(f, c).getTipoNodo());
+								botonera[n].updateButtons(tab.getNodo(f, c).getTipoNodo());
 							n++;
 						}
 					}
 				}
-				if (this.estado.equals(Estado.OBSTACLES)) this.finObstButton.setEnabled(true);
-				else this.finObstButton.setEnabled(false);
+				if (estado.equals(Estado.OBSTACLES)) finObstButton.setEnabled(true);
+				else finObstButton.setEnabled(false);
 				
 				if (estado.equals(Estado.WORKING)) {
 					estado = (Estado) controlador.accion(Acciones.CALCULATE, null);
 					update();
 				}
 		    }
+		});
 	}
 	
 	private void reset() {
