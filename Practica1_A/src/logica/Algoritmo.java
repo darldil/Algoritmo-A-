@@ -45,19 +45,19 @@ public class Algoritmo {
 				for (int i = 0; i < nodoActual.getNodosVecinos().size(); i++) {
 					Nodo nodoVecino = nodoActual.getNodosVecinos().get(i);
 					
-					if(!listaCerrada.contains(nodoVecino) || !nodoVecino.getTipoNodo().equals(TipoNodo.OBSTACULO)) {
-						float distancia1 = tab.calcularDistancias(nodoActual, nodoVecino);
+					if(!listaCerrada.contains(nodoVecino) && !nodoVecino.getTipoNodo().equals(TipoNodo.OBSTACULO)) {
+						float distanciaInicioAVecino = nodoActual.getDistanciaDesdeInicio() + tab.calcularDistancias(nodoActual, nodoVecino);
 						
 						if (!listaAbierta.contains(nodoVecino) && !listaCerrada.contains(nodoVecino)) {
 							listaAbierta.add(nodoVecino);
 							//Collections.sort(listaAbierta);
 							vecinoMejor = true;
-						} else if (distancia1 > nodoActual.getDistanciaDesdeInicio())
+						} else if (distanciaInicioAVecino > nodoActual.getDistanciaDesdeInicio())
 							vecinoMejor = true;
 						if (vecinoMejor) {
 							if (nodoVecino.getNodoAnterior() == null)
 								nodoVecino.setNodoAnterior(nodoActual);
-							nodoVecino.setDistanciaDesdeInicio(distancia1);
+							nodoVecino.setDistanciaDesdeInicio(distanciaInicioAVecino);
 							distanciaFilas = tab.getNodoMeta().getF() - nodoVecino.getF();
 							distanciaColumnas = tab.getNodoMeta().getC() - nodoVecino.getC();
 							float aux = (float) Math.sqrt((distanciaFilas * distanciaFilas) + (distanciaColumnas * distanciaColumnas));

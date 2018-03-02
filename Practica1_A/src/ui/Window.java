@@ -175,14 +175,14 @@ public class Window extends JFrame {
 					for (int f = tab.getFilas() - 1; f >= 0; f--) {
 						for(int c = 0; c < tab.getColumnas(); c++) {
 							if (estado.equals(Estado.STOP)) {
-								
-									try {
+								botonera[n].updateButtons(tab.getNodo(f, c).getTipoNodo());
+									/*try {
 										Thread.sleep(50);
 										botonera[n].updateButtons(tab.getNodo(f, c).getTipoNodo());
 									} catch (InterruptedException e) {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
-									}
+									}*/
 								
 							}
 							else 
