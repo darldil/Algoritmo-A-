@@ -5,16 +5,19 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.text.NumberFormatter;
 
+import logica.Nodo;
 import logica.Tablero;
 import logica.Transfer;
 
@@ -129,7 +132,7 @@ public class Window extends JFrame {
 		int n = 0;
 		
 		while (n < dimension) {
-			for (int f = this.tab.getFilas() - 1; f >= 0; f--) {
+			for (int f = 0; f < this.tab.getFilas(); f++) {
 				for(int c = 0; c < this.tab.getColumnas(); c++) {
 					this.botonera[n] = new TableroDeBotones(f, c);
 					this.botonera[n].addActionListener(new ActionListener(){
@@ -167,39 +170,57 @@ public class Window extends JFrame {
 		return aux;
 	}
 	
-	private void update() { //OPTIMIZAR
-		SwingUtilities.invokeLater(new Runnable() {
-		    public void run() {
-				int n = 0;
-				while( n < botonera.length) {
-					for (int f = tab.getFilas() - 1; f >= 0; f--) {
-						for(int c = 0; c < tab.getColumnas(); c++) {
-							if (estado.equals(Estado.STOP)) {
-								botonera[n].updateButtons(tab.getNodo(f, c).getTipoNodo());
-									/*try {
-										Thread.sleep(50);
-										botonera[n].updateButtons(tab.getNodo(f, c).getTipoNodo());
-									} catch (InterruptedException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}*/
-								
-							}
-							else 
-								botonera[n].updateButtons(tab.getNodo(f, c).getTipoNodo());
-							n++;
-						}
+	private void actualizarPanel(Object datos) { //OPTIMIZAR
+		Transfer coordenada = null;
+		
+		if (datos != null) {
+			coordenada = (Transfer) datos;
+			Integer f = coordenada.getF();
+			Integer c = coordenada.getC();
+			coordenada = (Transfer) datos;
+			
+			if (f.equals(-1) || c.equals(-1)) {
+				JOptionPane.showMessageDialog(null, "No hay camino");
+			}
+			else {
+				f = coordenada.getF();
+				c = coordenada.getC();
+				String aux = f.toString() + c.toString();
+				botonera[Integer.parseInt(aux)].updateButtons(tab.getNodo(f, c).getTipoNodo());
+			}
+	    	
+			
+			
+			/*if (estado.equals(Estado.WORKING)) {
+				estado = (Estado) controlador.accion(Acciones.CALCULATE, null);
+				update(null);
+			}*/
+		}
+		
+		else {
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						
+						Thread.sleep(1200);ArrayList<Nodo> tmp = controlador.getListaNodosModificados();
+			    		for (int n = 0; n < tmp.size(); n++) {
+			    			Integer f = tmp.get(n).getF();
+			    			Integer c = tmp.get(n).getC();
+			    			String aux = f.toString() + c.toString();
+			    			botonera[Integer.parseInt(aux)].updateButtons(tab.getNodo(f, c).getTipoNodo());
+			    		}
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
 				}
-				if (estado.equals(Estado.OBSTACLES)) finObstButton.setEnabled(true);
-				else finObstButton.setEnabled(false);
-				
-				if (estado.equals(Estado.WORKING)) {
-					estado = (Estado) controlador.accion(Acciones.CALCULATE, null);
-					update();
-				}
-		    }
-		});
+			}).start();
+		}
+		
+		
+		if (estado.equals(Estado.OBSTACLES)) finObstButton.setEnabled(true);
+		else finObstButton.setEnabled(false);
 	}
 	
 	private void reset() {
@@ -222,15 +243,27 @@ public class Window extends JFrame {
 		switch(estado) {
 			case START:
 				this.estado = (Estado) controlador.accion(Acciones.START, datos);
-				update();
+				actualizarPanel(datos);
 				break;
 			case OBSTACLES:
 				this.estado = (Estado) controlador.accion(Acciones.PUTOBSTACLES, datos);
-				update();
+				actualizarPanel(datos);
 				break;
 			case END:
 				this.estado = (Estado) controlador.accion(Acciones.PUTEND, datos);
-				update();
+				actualizarPanel(datos);
+				this.estado = (Estado) controlador.accion(Acciones.CALCULATE, null);
+				if (this.estado.equals(Estado.ERROR)) {
+					datos.setC(-1);
+					datos.setF(-1);
+					actualizarPanel(datos);
+				} else {
+					SwingUtilities.invokeLater(new Runnable() {
+					    public void run() {
+							actualizarPanel(null);
+					    }
+					});
+				}
 				break;
 			default: break;
 		}

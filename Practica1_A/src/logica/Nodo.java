@@ -17,7 +17,7 @@ public class Nodo implements Comparable<Nodo>{
 	private TipoNodo tipo;
 	private int f;
 	private int c;
-	private float distanciaDesdeInicio;
+	private float distanciaHastaInicio;
 	private float distanciaHastaMeta;
 	
 	public Nodo(int x, int y) {
@@ -25,7 +25,7 @@ public class Nodo implements Comparable<Nodo>{
 		this.setF(x);
 		this.setC(y);
 		this.tipo = TipoNodo.VACIO;
-		this.setDistanciaDesdeInicio(Integer.MAX_VALUE);
+		this.setDistanciaHastaInicio(Integer.MAX_VALUE);
 		this.setDistanciaHastaMeta(0);
 	}
 	
@@ -34,7 +34,7 @@ public class Nodo implements Comparable<Nodo>{
 		this.f = x;
 		this.c = y;
 		this.tipo = tipo;
-		this.setDistanciaDesdeInicio(0);
+		this.setDistanciaHastaInicio(Integer.MAX_VALUE);
 		this.setDistanciaHastaMeta(0);
 	}
 	
@@ -158,12 +158,12 @@ public class Nodo implements Comparable<Nodo>{
 		this.c = c;
 	}
 	
-	public float getDistanciaDesdeInicio() {
-		return distanciaDesdeInicio;
+	public float getDistanciaHastaInicio() {
+		return distanciaHastaInicio;
 	}
 
-	public void setDistanciaDesdeInicio(float distanciaDesdeInicio) {
-		this.distanciaDesdeInicio = distanciaDesdeInicio;
+	public void setDistanciaHastaInicio(float distanciaHastaInicio) {
+		this.distanciaHastaInicio = distanciaHastaInicio;
 	}
 
 	public float getDistanciaHastaMeta() {
@@ -211,14 +211,14 @@ public class Nodo implements Comparable<Nodo>{
 
 	@Override
 	public int compareTo(Nodo nodo) {
-		/*float distanciaHastaMeta = this.distanciaDesdeInicio + this.distanciaHastaMeta;
-		float distanciaHastaMetaAux = nodo.getDistanciaDesdeInicio() + nodo.getDistanciaHastaMeta();
+		float distanciaHastaMeta = this.distanciaHastaInicio + this.distanciaHastaMeta;
+		float distanciaHastaMetaAux = nodo.getDistanciaHastaInicio() + nodo.getDistanciaHastaMeta();
 		
-		if (distanciaHastaMeta < distanciaHastaMetaAux) return 1;
-		else if (distanciaHastaMeta > distanciaHastaMetaAux) return -1;*/
+		if (distanciaHastaMeta < distanciaHastaMetaAux) return -1;
+		else if (distanciaHastaMeta > distanciaHastaMetaAux) return 1;
 		
-		if (this.distanciaHastaMeta < nodo.getDistanciaHastaMeta()) return -1;
-		else if (this.distanciaHastaMeta > nodo.getDistanciaHastaMeta()) return 1;
+		/*if (this.distanciaHastaMeta < nodo.getDistanciaHastaMeta()) return -1;
+		else if (this.distanciaHastaMeta > nodo.getDistanciaHastaMeta()) return 1;*/
 		
 		return 0;
 	}

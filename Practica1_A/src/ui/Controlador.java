@@ -1,6 +1,9 @@
 package ui;
 
+import java.util.ArrayList;
+
 import logica.Algoritmo;
+import logica.Nodo;
 import logica.Tablero;
 import logica.Transfer;
 
@@ -16,6 +19,10 @@ public class Controlador {
 	
 	public Tablero getTablero() {
 		return this.tablero;
+	}
+	
+	public ArrayList<Nodo> getListaNodosModificados() {
+		return alg.getListaCerrada();
 	}
 	
 	private Estado reset(Object datos) {
@@ -62,8 +69,8 @@ public class Controlador {
 				break;
 				
 			case CALCULATE:
-				alg.calcularCamino();
-				estado = Estado.STOP;
+				if (alg.calcularCamino() == null) estado = Estado.ERROR;
+				else estado = Estado.STOP;
 				
 			default: break;
 		}

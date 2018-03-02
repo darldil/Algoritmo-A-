@@ -17,20 +17,21 @@ public class Tablero {
 		this.tablero = new ArrayList<ArrayList<Nodo>>();
 		this.filas = FILAS;
 		this.columnas = COLUMNAS;
-		this.inicioF = 0;
-		this.inicioC = 0;
-		this.metaF = 0;
-		this.metaC = 0;
+		this.inicioF = -1;
+		this.inicioC = -1;
+		this.metaF = -1;
+		this.metaC = -1;
 		this.inicializarTablero();
 	}
 	
 	public Tablero(int f, int c) {
 		this.tablero = new ArrayList<ArrayList<Nodo>>();
 		this.filas = f;
-		this.columnas = c;this.inicioF = 0;
-		this.inicioC = 0;
-		this.metaF = 0;
-		this.metaC = 0;
+		this.columnas = c;
+		this.inicioF = -1;
+		this.inicioC = -1;
+		this.metaF = -1;
+		this.metaC = -1;
 		this.inicializarTablero();
 	}
 	
@@ -44,22 +45,22 @@ public class Tablero {
 		for (int f = 0; f < filas; f++) {
 			for (int c = 0; c < columnas; c++) {
 				Nodo nodo = tablero.get(f).get(c);
-				if (f < filas - 1)
-					nodo.setNorte(tablero.get(f + 1).get(c));
-				if (f > 0) 
-					nodo.setSur(tablero.get(f - 1).get(c));
-				if (c < columnas - 1)
-					nodo.setEste(tablero.get(f).get(c + 1));
-				if (c > 0)
-					nodo.setOeste(tablero.get(f).get(c - 1));
-				if (f > 0 && c < 0)
-					nodo.setSuroeste(tablero.get(f - 1).get(c - 1));
-				if (f > 0 && c < columnas - 1)
-					nodo.setSureste(tablero.get(f - 1).get(c + 1));
-				if (f < filas - 1 && c < columnas - 1)
-					nodo.setNoreste(tablero.get(f + 1).get(c + 1));
+				if (c > 0) 
+					nodo.setNorte(tablero.get(f).get(c - 1));
 				if (f < filas - 1 && c > 0)
 					nodo.setNoroeste(tablero.get(f + 1).get(c - 1));
+				if (f < filas - 1)
+					nodo.setEste(tablero.get(f + 1).get(c));
+				if (f < filas - 1 && c < columnas - 1)
+					nodo.setSureste(tablero.get(f + 1).get(c + 1));
+				if (c < columnas - 1)
+					nodo.setSur(tablero.get(f).get(c + 1));
+				if (f > 0 && c < columnas - 1)
+					nodo.setSuroeste(tablero.get(f - 1).get(c + 1));
+				if (f > 0)
+					nodo.setOeste(tablero.get(f - 1).get(c));
+				if (f > 0 && c > 0)
+					nodo.setNoreste(tablero.get(f - 1).get(c - 1));
 			}
 		}
 	}
@@ -77,14 +78,16 @@ public class Tablero {
 	}
 	
 	public void establecerInicio(int f, int c) {
-		this.setNodoInicio(this.inicioF, this.inicioC, false);
+		if (this.inicioF != -1 && this.inicioC != -1 )
+			this.setNodoInicio(this.inicioF, this.inicioC, false);
 		this.inicioF = f;
 		this.inicioC = c;
 		this.setNodoInicio(f, c, true);
 	}
 	
 	public void establecerMeta(int f, int c) {
-		this.setNodoMeta(this.metaF, this.metaC, false);
+		if (this.metaF != -1 && this.metaC != -1 )
+			this.setNodoMeta(this.metaF, this.metaC, false);
 		this.metaF = f;
 		this.metaC = c;
 		this.setNodoMeta(f, c, true);
