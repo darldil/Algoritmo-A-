@@ -5,8 +5,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
@@ -14,11 +12,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.text.NumberFormatter;
 
-import logica.Nodo;
 import logica.Tablero;
+import logica.TipoNodo;
 import logica.Transfer;
 
 public class Window extends JFrame {
@@ -175,26 +172,24 @@ public class Window extends JFrame {
 		
 		if (datos != null) {
 			coordenada = (Transfer) datos;
-			Integer f = coordenada.getF();
-			Integer c = coordenada.getC();
-			coordenada = (Transfer) datos;
+			int filas = coordenada.getF();
+			int columnas = coordenada.getC();
+			int n = 0;
 			
-			if (f.equals(-1) || c.equals(-1)) {
+			if (filas == -1 || columnas == -1) {
 				JOptionPane.showMessageDialog(null, "No hay camino");
 			}
 			else {
-				f = coordenada.getF();
-				c = coordenada.getC();
-				String aux = f.toString() + c.toString();
-				botonera[Integer.parseInt(aux)].updateButtons(tab.getNodo(f, c).getTipoNodo());
+				while (n < this.tab.getFilas() * this.tab.getColumnas()) {
+					for (int f = 0; f < this.tab.getFilas(); f++) {
+						for(int c = 0; c < this.tab.getColumnas(); c++) {
+							botonera[n].updateButtons(tab.getNodo(f, c).getTipoNodo());
+							n++;
+						}
+					}
+				}
 			}
 	    	
-			
-			
-			/*if (estado.equals(Estado.WORKING)) {
-				estado = (Estado) controlador.accion(Acciones.CALCULATE, null);
-				update(null);
-			}*/
 		}
 		
 		else {
@@ -202,14 +197,27 @@ public class Window extends JFrame {
 				@Override
 				public void run() {
 					try {
-						ArrayList<Nodo> tmp = controlador.getListaNodosModificados();
-			    		for (int n = 0; n < tmp.size(); n++) {
+						//ArrayList<Nodo> tmp = controlador.getListaNodosModificados();
+						int n = 0;
+						while (n < tab.getFilas() * tab.getColumnas()) {
+							for (int f = 0; f < tab.getFilas(); f++) {
+								for(int c = 0; c < tab.getColumnas(); c++) {
+									if (!tab.getNodo(f, c).getTipoNodo().equals(TipoNodo.VACIO)) {
+										Thread.sleep(100);
+										botonera[n].updateButtons(tab.getNodo(f, c).getTipoNodo());
+										
+									}
+									n++;
+								}
+							}
+						}
+			    		/*for (int n = 0; n < tmp.size(); n++) {
 			    			Integer f = tmp.get(n).getF();
 			    			Integer c = tmp.get(n).getC();
 			    			String aux = f.toString() + c.toString();
 			    			Thread.sleep(100);
 			    			botonera[Integer.parseInt(aux)].updateButtons(tab.getNodo(f, c).getTipoNodo());
-			    		}
+			    		}*/
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

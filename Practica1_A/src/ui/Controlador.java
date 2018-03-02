@@ -1,9 +1,6 @@
 package ui;
 
-import java.util.ArrayList;
-
 import logica.Algoritmo;
-import logica.Nodo;
 import logica.Tablero;
 import logica.Transfer;
 
@@ -21,9 +18,9 @@ public class Controlador {
 		return this.tablero;
 	}
 	
-	public ArrayList<Nodo> getListaNodosModificados() {
+	/*public ArrayList<Nodo> getListaNodosModificados() {
 		return alg.getListaCerrada();
-	}
+	}*/
 	
 	private Estado reset(Object datos) {
 		this.tablero = new Tablero(((Transfer) datos).getF(), ((Transfer)datos).getC());
