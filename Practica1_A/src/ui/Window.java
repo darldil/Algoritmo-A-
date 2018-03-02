@@ -202,12 +202,12 @@ public class Window extends JFrame {
 				@Override
 				public void run() {
 					try {
-						
-						Thread.sleep(1200);ArrayList<Nodo> tmp = controlador.getListaNodosModificados();
+						ArrayList<Nodo> tmp = controlador.getListaNodosModificados();
 			    		for (int n = 0; n < tmp.size(); n++) {
 			    			Integer f = tmp.get(n).getF();
 			    			Integer c = tmp.get(n).getC();
 			    			String aux = f.toString() + c.toString();
+			    			Thread.sleep(100);
 			    			botonera[Integer.parseInt(aux)].updateButtons(tab.getNodo(f, c).getTipoNodo());
 			    		}
 					} catch (InterruptedException e) {
@@ -258,11 +258,7 @@ public class Window extends JFrame {
 					datos.setF(-1);
 					actualizarPanel(datos);
 				} else {
-					SwingUtilities.invokeLater(new Runnable() {
-					    public void run() {
-							actualizarPanel(null);
-					    }
-					});
+					actualizarPanel(null);
 				}
 				break;
 			default: break;
