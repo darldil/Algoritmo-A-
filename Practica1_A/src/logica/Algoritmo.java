@@ -30,6 +30,8 @@ public class Algoritmo {
 		listaAbierta.add(this.tab.getNodoInicio());
 		Collections.sort(listaAbierta);
 		
+		if (this.tab.getNodoMeta().getTipoNodo().equals(TipoNodo.METAOBSTACULO)) return null;
+		
 		while (listaAbierta.size() != 0) {
 			Nodo nodoActual = listaAbierta.get(0);
 			float distanciaFilas, distanciaColumnas;

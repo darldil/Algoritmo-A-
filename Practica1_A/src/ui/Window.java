@@ -25,9 +25,6 @@ import logica.Transfer;
 
 public class Window extends JFrame {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private Tablero tab;
 	private JPanel panel_tab;
@@ -68,8 +65,7 @@ public class Window extends JFrame {
 		this.inicializarJTextFields();
 		this.inicializarJPanels();
 		
-		this.panel_botones.add(closeButton, BorderLayout.SOUTH);
-		this.panel_options.add(panel_botones, BorderLayout.SOUTH);
+		this.panel_options.add(panel_botones, BorderLayout.CENTER);
 		this.panel_tab.add(ObtenerTableroBotones());
 		
 		add(panel_tab, BorderLayout.WEST);
@@ -127,6 +123,10 @@ public class Window extends JFrame {
 				System.exit(0);
 			}
 		});
+		JPanel tmp = new JPanel();
+		tmp.setLayout(new BorderLayout());
+		tmp.add(closeButton, BorderLayout.NORTH);
+		this.panel_botones.add(tmp, BorderLayout.CENTER);
 		
 	}
 	
@@ -134,7 +134,7 @@ public class Window extends JFrame {
 		NumberFormat format = NumberFormat.getInstance();
 		NumberFormatter formatter = new NumberFormatter(format);
 		formatter.setValueClass(Integer.class);
-		formatter.setMinimum(0);
+		formatter.setMinimum(1);
 		formatter.setMaximum(50);
 		formatter.setAllowsInvalid(false);
 		

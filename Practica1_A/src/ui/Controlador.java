@@ -18,10 +18,6 @@ public class Controlador {
 		return this.tablero;
 	}
 	
-	/*public ArrayList<Nodo> getListaNodosModificados() {
-		return alg.getListaCerrada();
-	}*/
-	
 	private Estado reset(Object datos) {
 		this.tablero = new Tablero(((Transfer) datos).getF(), ((Transfer)datos).getC());
 		this.alg = new Algoritmo(this.tablero);

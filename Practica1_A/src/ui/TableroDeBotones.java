@@ -7,9 +7,7 @@ import javax.swing.JButton;
 import logica.TipoNodo;
 
 public class TableroDeBotones extends JButton{
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	private int fila;
 	private int columna;
@@ -27,7 +25,7 @@ public class TableroDeBotones extends JButton{
 	}
 	
 	/**
-	 * Obtiene el bot�n.
+	 * Obtiene el botón.
 	 * @return boton
 	 */
 	public JButton getBoton() {
@@ -52,13 +50,13 @@ public class TableroDeBotones extends JButton{
 	
 	public void updateButtons(TipoNodo tipo) {
 		switch(tipo) {
-			//case VACIO: this.setBackground(Color.GRAY); break;
+			case VACIO: this.setBackground(null); break;
 			case INICIO: this.setBackground(Color.GREEN); break;
 			case OBSTACULO: this.setBackground(Color.RED); break;
 			case META: this.setBackground(Color.BLACK); break;
 			case CAMINO: this.setBackground(Color.BLUE); break;
+			case METAOBSTACULO: this.setBackground(Color.MAGENTA); break;
 			default: break;
 		}
-		//this.setIcon(tab.getCasilla(f, c).icono());
 	}
 }

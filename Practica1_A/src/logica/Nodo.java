@@ -197,6 +197,7 @@ public class Nodo implements Comparable<Nodo>{
 
 	public void setMeta(boolean meta) {
 		if (!meta) this.tipo = TipoNodo.VACIO;
+		else if (this.tipo.equals(TipoNodo.OBSTACULO)) this.tipo = TipoNodo.METAOBSTACULO;
 		else this.tipo = TipoNodo.META;
 	}
 	
@@ -216,9 +217,6 @@ public class Nodo implements Comparable<Nodo>{
 		
 		if (distanciaHastaMeta < distanciaHastaMetaAux) return -1;
 		else if (distanciaHastaMeta > distanciaHastaMetaAux) return 1;
-		
-		/*if (this.distanciaHastaMeta < nodo.getDistanciaHastaMeta()) return -1;
-		else if (this.distanciaHastaMeta > nodo.getDistanciaHastaMeta()) return 1;*/
 		
 		return 0;
 	}
