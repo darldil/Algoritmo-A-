@@ -27,7 +27,7 @@ public class TableroDeBotones extends JButton{
 	}
 	
 	/**
-	 * Obtiene el botón.
+	 * Obtiene el botï¿½n.
 	 * @return boton
 	 */
 	public JButton getBoton() {
@@ -52,11 +52,12 @@ public class TableroDeBotones extends JButton{
 	
 	public void updateButtons(TipoNodo tipo) {
 		switch(tipo) {
-			case VACIO: this.setBackground(Color.GRAY); break;
+			//case VACIO: this.setBackground(Color.GRAY); break;
 			case INICIO: this.setBackground(Color.GREEN); break;
 			case OBSTACULO: this.setBackground(Color.RED); break;
 			case META: this.setBackground(Color.BLACK); break;
 			case CAMINO: this.setBackground(Color.BLUE); break;
+			default: break;
 		}
 		//this.setIcon(tab.getCasilla(f, c).icono());
 	}

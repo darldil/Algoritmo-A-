@@ -30,44 +30,50 @@ public class Controlador {
 	}
 	
 	public Object accion(Acciones evento, Object datos) {
-		int x = 0, y = 0;
+		int f = 0, c = 0;
 		Estado estado = null;
 		switch(evento) {
 			case RESET: 
 				estado = this.reset(datos);
 				break;
 			case START:
-				x = ((Transfer) datos).getF();
-				y = ((Transfer) datos).getC();
-				alg.setInicio(x, y);
+				f = ((Transfer) datos).getF();
+				c = ((Transfer) datos).getC();
+				alg.setInicio(f, c);
 				alg.setEstado(Estado.OBSTACLES);
 				estado = Estado.OBSTACLES;
 				break;
 				
 			case PUTOBSTACLES:
-				x = ((Transfer) datos).getF();
-				y = ((Transfer) datos).getC();
-				if (x == -1 || y == -1) {
+				f = ((Transfer) datos).getF();
+				c = ((Transfer) datos).getC();
+				if (f == -1 || c == -1) {
 					alg.setEstado(Estado.END);
 					estado = Estado.END;
 				}
 				else {
-					alg.setObstaculo(x, y);
+					alg.setObstaculo(f, c);
 					estado = Estado.OBSTACLES;
 				}
 				break;
 				
 			case PUTEND:
-				x = ((Transfer) datos).getF();
-				y = ((Transfer) datos).getC();
-				alg.setMeta(x, y);
+				f = ((Transfer) datos).getF();
+				c = ((Transfer) datos).getC();
+				alg.setMeta(f, c);
 				alg.setEstado(Estado.WORKING);
 				estado = Estado.WORKING;
 				break;
 				
 			case CALCULATE:
 				if (alg.calcularCamino() == null) estado = Estado.ERROR;
-				else estado = Estado.STOP;
+				else {
+					estado = Estado.STOP;
+				}
+				break;
+				
+			case GETRUTE:
+				return alg.getRutaMasCorta();
 				
 			default: break;
 		}

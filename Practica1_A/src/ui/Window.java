@@ -14,8 +14,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.text.NumberFormatter;
 
+import logica.Ruta;
 import logica.Tablero;
-import logica.TipoNodo;
 import logica.Transfer;
 
 public class Window extends JFrame {
@@ -29,7 +29,6 @@ public class Window extends JFrame {
 	private JPanel panel_options;
 	private JPanel panel_filas;
 	private JPanel panel_columnas;
-	//private JPanel panel_exit;
 	private JFormattedTextField filas;
 	private JFormattedTextField columnas;
 	private TableroDeBotones[] botonera;
@@ -167,66 +166,45 @@ public class Window extends JFrame {
 		return aux;
 	}
 	
-	private void actualizarPanel(Object datos) { //OPTIMIZAR
-		Transfer coordenada = null;
+	private void actualizarPanel(Object datos) {
 		
 		if (datos != null) {
-			coordenada = (Transfer) datos;
-			int filas = coordenada.getF();
-			int columnas = coordenada.getC();
 			int n = 0;
-			
-			if (filas == -1 || columnas == -1) {
-				JOptionPane.showMessageDialog(null, "No hay camino");
-			}
-			else {
-				while (n < this.tab.getFilas() * this.tab.getColumnas()) {
-					for (int f = 0; f < this.tab.getFilas(); f++) {
-						for(int c = 0; c < this.tab.getColumnas(); c++) {
-							botonera[n].updateButtons(tab.getNodo(f, c).getTipoNodo());
-							n++;
-						}
+			while (n < this.tab.getFilas() * this.tab.getColumnas()) {
+				for (int f = 0; f < this.tab.getFilas(); f++) {
+					for(int c = 0; c < this.tab.getColumnas(); c++) {
+						botonera[n].updateButtons(tab.getNodo(f, c).getTipoNodo());
+						n++;
 					}
 				}
 			}
-	    	
 		}
 		
-		else {
+		else if (!this.estado.equals(Estado.ERROR)){
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
 					try {
-						//ArrayList<Nodo> tmp = controlador.getListaNodosModificados();
-						int n = 0;
-						while (n < tab.getFilas() * tab.getColumnas()) {
-							for (int f = 0; f < tab.getFilas(); f++) {
-								for(int c = 0; c < tab.getColumnas(); c++) {
-									if (!tab.getNodo(f, c).getTipoNodo().equals(TipoNodo.VACIO)) {
-										Thread.sleep(100);
-										botonera[n].updateButtons(tab.getNodo(f, c).getTipoNodo());
-										
-									}
-									n++;
+						Ruta tmp = (Ruta) controlador.accion(Acciones.GETRUTE, null);
+						int z = 0;
+						while (z < tmp.getSize() - 1) {
+							for (int n = 0; n < tab.getFilas() * tab.getColumnas(); n++) {
+								if (botonera[n].getFila() == tmp.getF(z) && botonera[n].getColumna() == tmp.getC(z)) {
+									Thread.sleep(100);
+									botonera[n].updateButtons(tab.getNodo(tmp.getF(z), tmp.getC(z)).getTipoNodo());	
+									z++;
 								}
 							}
 						}
-			    		/*for (int n = 0; n < tmp.size(); n++) {
-			    			Integer f = tmp.get(n).getF();
-			    			Integer c = tmp.get(n).getC();
-			    			String aux = f.toString() + c.toString();
-			    			Thread.sleep(100);
-			    			botonera[Integer.parseInt(aux)].updateButtons(tab.getNodo(f, c).getTipoNodo());
-			    		}*/
+			    		
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
 			}).start();
 		}
 		
-		
+		if (this.estado.equals(Estado.ERROR)) JOptionPane.showMessageDialog(null, "No hay camino");
 		if (estado.equals(Estado.OBSTACLES)) finObstButton.setEnabled(true);
 		else finObstButton.setEnabled(false);
 	}
@@ -262,9 +240,7 @@ public class Window extends JFrame {
 				actualizarPanel(datos);
 				this.estado = (Estado) controlador.accion(Acciones.CALCULATE, null);
 				if (this.estado.equals(Estado.ERROR)) {
-					datos.setC(-1);
-					datos.setF(-1);
-					actualizarPanel(datos);
+					actualizarPanel(null);
 				} else {
 					actualizarPanel(null);
 				}

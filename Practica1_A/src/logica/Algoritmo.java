@@ -104,9 +104,9 @@ public class Algoritmo {
 		return this.listaCerrada;
 	}
 	
-	/*public Ruta getRutaMasCorta() {
+	public Ruta getRutaMasCorta() {
 		return this.rutaMasCorta;
-	}*/
+	}
 	
 	public void setEstado(Estado state) {
 		this.state = state;

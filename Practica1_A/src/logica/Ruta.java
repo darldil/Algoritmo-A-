@@ -17,11 +17,11 @@ public class Ruta {
 		return rutaHaciaMeta.get(indice);
 	}
 	
-	public int getX(int indice) {
+	public int getF(int indice) {
 		return rutaHaciaMeta.get(indice).getF();
 	}
 	
-	public int getY(int indice) {
+	public int getC(int indice) {
 		return rutaHaciaMeta.get(indice).getC();
 	}
 	
