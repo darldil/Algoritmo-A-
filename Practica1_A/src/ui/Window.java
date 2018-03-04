@@ -1,10 +1,14 @@
 package ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
+
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
@@ -12,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.text.NumberFormatter;
 
 import logica.Ruta;
@@ -27,8 +32,10 @@ public class Window extends JFrame {
 	private Tablero tab;
 	private JPanel panel_tab;
 	private JPanel panel_options;
+	private JPanel panel_dimensiones;
 	private JPanel panel_filas;
 	private JPanel panel_columnas;
+	private JPanel panel_botones;
 	private JFormattedTextField filas;
 	private JFormattedTextField columnas;
 	private TableroDeBotones[] botonera;
@@ -46,7 +53,7 @@ public class Window extends JFrame {
 		initializeUI();
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		pack();
-		this.setResizable(true);
+		this.setResizable(false);
 		this.setTitle("A*");
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
@@ -55,13 +62,28 @@ public class Window extends JFrame {
 	private void initializeUI() {
 		this.panel_tab = new JPanel();
 		this.panel_options = new JPanel();
+		
+		this.panel_options.setLayout(new BorderLayout());
+
+		this.inicializarJTextFields();
+		this.inicializarJPanels();
+		
+		this.panel_botones.add(closeButton, BorderLayout.SOUTH);
+		this.panel_options.add(panel_botones, BorderLayout.SOUTH);
+		this.panel_tab.add(ObtenerTableroBotones());
+		
+		add(panel_tab, BorderLayout.WEST);
+		add(panel_options, BorderLayout.EAST);
+	}
+	
+	private void inicializarJPanels() {
+		this.panel_dimensiones = new JPanel();
 		this.panel_filas = new JPanel();
 		this.panel_columnas = new JPanel();
-	
-		this.panel_options.setLayout(new BoxLayout(panel_options, BoxLayout.Y_AXIS));
-		this.panel_columnas.setAlignmentY(0f);
+		this.panel_botones = new JPanel();
 		
-		this.inicializarJTextFields();
+		this.panel_botones.setLayout(new BorderLayout());
+		
 		this.resetButton = new JButton();
 		this.resetButton.setText("Reiniciar");
 		this.resetButton.addActionListener(new ActionListener(){
@@ -72,13 +94,18 @@ public class Window extends JFrame {
 				reset();
 			}
 		});
-		this.panel_filas.add(new JLabel("Filas"));
-		this.panel_filas.add(filas);
-		this.panel_columnas.add(new JLabel("Columnas"));
-		this.panel_columnas.add(columnas);
-		this.panel_options.add(panel_filas);
-		this.panel_options.add(panel_columnas);
-		this.panel_options.add(resetButton);
+		
+		panel_dimensiones.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY), 
+				"Dimensiones"));
+		panel_dimensiones.setLayout(new BoxLayout(panel_dimensiones, BoxLayout.Y_AXIS));
+		panel_filas.add(new JLabel("          Filas"));
+		panel_filas.add(filas);
+		panel_columnas.add(new JLabel("Columnas"));
+		panel_columnas.add(columnas);
+		panel_dimensiones.add(panel_filas);
+		panel_dimensiones.add(panel_columnas);
+		panel_dimensiones.add(resetButton);
+		this.panel_options.add(panel_dimensiones, BorderLayout.NORTH);
 		
 		this.finObstButton = new JButton();
 		this.finObstButton.setText("Fin Obstaculos");
@@ -90,7 +117,7 @@ public class Window extends JFrame {
 				finObstButton.setEnabled(false);
 			}
 		});
-		this.panel_options.add(finObstButton);
+		this.panel_botones.add(finObstButton, BorderLayout.NORTH);
 		this.panel_tab.add(ObtenerTableroBotones());
 		
 		this.closeButton = new JButton();
@@ -100,11 +127,7 @@ public class Window extends JFrame {
 				System.exit(0);
 			}
 		});
-		this.panel_options.add(closeButton);
-		this.panel_tab.add(ObtenerTableroBotones());
 		
-		add(panel_tab, BorderLayout.WEST);
-		add(panel_options, BorderLayout.EAST);
 	}
 	
 	private void inicializarJTextFields() {
@@ -117,6 +140,12 @@ public class Window extends JFrame {
 		
 		this.filas = new JFormattedTextField(formatter);
 		this.columnas = new JFormattedTextField(formatter);
+		
+		this.filas.setPreferredSize(new Dimension(100, 24));
+		this.columnas.setPreferredSize(new Dimension(100, 24));
+		
+		this.filas.setHorizontalAlignment(SwingConstants.RIGHT);
+		this.columnas.setHorizontalAlignment(SwingConstants.RIGHT);
 		
 		this.filas.setText("10");
 		this.columnas.setText("10");
