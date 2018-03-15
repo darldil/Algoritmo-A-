@@ -51,7 +51,7 @@ public class Window extends JFrame {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		pack();
 		this.setResizable(false);
-		this.setTitle("A*");
+		this.setTitle("A* - Mauricio Abbati Loureiro");
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 	}
